@@ -1,8 +1,9 @@
-from middlewares.error_handler import ErrorHandler
 from core.config import settings
 from db.base_class import Base
 from db.session import engine
 from fastapi import FastAPI
+from middlewares.error_handler import ErrorHandler
+from routes.healcheck import healcheck_router
 
 
 def create_tables():         
@@ -19,6 +20,4 @@ app = start_application()
 app.add_middleware(ErrorHandler)
 
 
-@app.get("/", tags=['home'])
-def read_root():
-    return {"Hello": "World"}
+app.include_router(healcheck_router)

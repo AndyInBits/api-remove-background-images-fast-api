@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Float, Integer, String, Datetime
 from db.base_class import Base
+from sqlalchemy import Column, Datetime, Float, Integer, String
+from sqlalchemy.orm import relationship
 
 
 class Image(Base):
@@ -9,3 +10,4 @@ class Image(Base):
     url_new_file = Column(Integer)
     image_name = Column(Float)
     created_at = Column(Datetime)
+    user = relationship("User", back_populates="user")
