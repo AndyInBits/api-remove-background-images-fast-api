@@ -24,6 +24,11 @@ def update_user(id: int, user: UserEdit = Body(...)) -> UserEdit:
     response = UserService(db).update_user(user, id)
     return JSONResponse(content=jsonable_encoder(response), status_code=200)
 
+@user_router.delete("/user/{id}", tags=["Users"], response_model=dict,dependencies=[Depends(JWTBearer())])
+def delete_user(id: int) -> dict:
+    db = Session()
+    UserService(db).delete_user(id)
+    return JSONResponse(content={"msg": "Deleted"}, status_code=200)
 
 @user_router.post(
     "/login", tags=["Users"], response_model=UserAuth, status_code=200

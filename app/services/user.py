@@ -39,6 +39,15 @@ class UserService:
         self.db.close()
         response = UserEdit(email=user.email, full_name=user.full_name)
         return response
+    
+    def delete_user(self, id: int) -> None:
+        user = self.db.query(UserModel).filter(UserModel.id == id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        self.db.delete(user)
+        self.db.commit()
+        self.db.close()
+        return None
 
     def login_user(self, user_param: UserLogin) -> UserAuth:
         user = (
