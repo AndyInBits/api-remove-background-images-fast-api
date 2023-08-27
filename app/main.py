@@ -4,6 +4,7 @@ from db.session import engine
 from fastapi import FastAPI
 from middlewares.error_handler import ErrorHandler
 from routes.healcheck import healcheck_router
+from routes.user import user_router
 
 
 def create_tables():         
@@ -21,3 +22,4 @@ app.add_middleware(ErrorHandler)
 
 
 app.include_router(healcheck_router)
+app.include_router(user_router)
