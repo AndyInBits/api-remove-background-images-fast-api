@@ -1,8 +1,8 @@
+from middlewares.error_handler import ErrorHandler
 from core.config import settings
 from db.base_class import Base
 from db.session import engine
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
 
 
 def create_tables():         
@@ -16,6 +16,8 @@ def start_application():
 
 
 app = start_application()
+app.add_middleware(ErrorHandler)
+
 
 @app.get("/", tags=['home'])
 def read_root():
