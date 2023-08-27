@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure
+    env_file: .env
+    ports:
+      - "80:5000"
+    volumes:
+      - ./app:/app
