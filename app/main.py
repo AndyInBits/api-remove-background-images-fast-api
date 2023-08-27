@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from middlewares.error_handler import ErrorHandler
 from routes.healcheck import healcheck_router
 from routes.user import user_router
-
+from routes.image import images_router
 
 def create_tables():         
 	Base.metadata.create_all(bind=engine)
@@ -23,3 +23,4 @@ app.add_middleware(ErrorHandler)
 
 app.include_router(healcheck_router)
 app.include_router(user_router)
+app.include_router(images_router)

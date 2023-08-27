@@ -1,9 +1,8 @@
 from enum import Enum
 from typing import Optional
-
-from pydantic import BaseModel, Field, FilePath
-from sqlalchemy import Column, Datetime, Float, Integer, String
-
+from fastapi import Form, File, UploadFile
+from pydantic import BaseModel, validator
+from fastapi import HTTPException
 
 class ImageFormat(Enum):
     JPEG = 'jpeg'
@@ -13,19 +12,20 @@ class ImageFormat(Enum):
     TIFF = 'tiff'
 
 class Image(BaseModel):
-    id: Optional[int] = None
-    format : ImageFormat = Field(default=ImageFormat.PNG)
-    width : Optional[int] = Field()
-    height : Optional[int] = Field()
-    file : FilePath = Field()
+    format_output : ImageFormat = Form(default=ImageFormat.PNG)
+    width : Optional[int] = Form(500)
+    height : Optional[int] = Form(500)
+    image:  UploadFile = File(...,format=["jpeg","png","gif","bmp","tiff"])
 
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "format": ImageFormat.PNG,
-                "width": 100,
-                "height": 100,
-                "file": "image.png"
-            }
-        }
+    @validator("image")
+    def image_validate(cls, value, values, **kwargs):
+        content_types = [
+            'image/jpeg',
+            'image/png',
+            'image/gif',
+            'image/bmp',
+            'image/tiff'
+        ]
+        if value.content_type not in content_types:
+            raise HTTPException(400, detail="Invalid document type only is allowe : jpeg,png,gif,bmp,tiff")
+        return value

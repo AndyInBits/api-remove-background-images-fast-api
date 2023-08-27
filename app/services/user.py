@@ -1,11 +1,9 @@
 import base64
 import hashlib
 
-from core.config import settings
 from fastapi import HTTPException
 from jwt_manager.jwt_manager import create_token
 from models.users import User as UserModel
-from passlib.context import CryptContext
 from schemas.user import User, UserAuth, UserEdit, UserLogin
 
 
