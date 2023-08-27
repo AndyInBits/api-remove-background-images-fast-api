@@ -1,7 +1,7 @@
 from core.config import settings
+from fastapi.encoders import jsonable_encoder
 from jwt import decode, encode
 from models.users import User as UserModel
-from fastapi.encoders import jsonable_encoder
 
 
 def create_token(user: UserModel, secret: str = settings.SECRET_KEY) -> str:

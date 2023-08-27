@@ -1,8 +1,9 @@
 from typing import Optional
-from db.session import Session
 
-from pydantic import BaseModel, EmailStr, validator
+from db.session import Session
 from models.users import User as UserModel
+from pydantic import BaseModel, EmailStr, validator
+
 
 class User(BaseModel):
     id: Optional[int] = None
@@ -21,6 +22,7 @@ class User(BaseModel):
     def email_unique_validate(cls, value, values, **kwargs):
         db = Session()
         res = db.query(UserModel).filter(UserModel.email == value).all()
+        db.close()
         if res:
             raise ValueError('Email must be unique!')
         return value
@@ -52,3 +54,15 @@ class UserLogin(BaseModel):
 class UserAuth(BaseModel):
     token: str 
     email: str
+
+class UserEdit(BaseModel):
+    email: str
+    full_name: str
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "new_admin@gmail.com",
+                "full_name": "New name",
+            }
+        }
