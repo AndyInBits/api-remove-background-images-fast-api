@@ -15,9 +15,8 @@ class ImageService:
         self.db = db
 
     def handler_image(self, image_data: Image) -> None:
-        input_image , output_image = ImageHandler.load_image_input_dir(image_data)
-        output_image = ImageHandler.remove_background_img(image_data,input_image, output_image)
-
+        output_image = ImageHandler(image_data).run()
+        print(output_image)
         
                 
 
