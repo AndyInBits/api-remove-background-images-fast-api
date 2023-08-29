@@ -29,3 +29,9 @@ class Image(BaseModel):
         if value.content_type not in content_types:
             raise HTTPException(400, detail="Invalid document type only is allowe : jpeg,png,gif,bmp,tiff")
         return value
+    
+class ImageResponse(BaseModel):
+    id : int
+    url_new_file : str
+    created_at : str
+    user_id : int

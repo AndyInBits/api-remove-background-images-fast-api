@@ -1,4 +1,3 @@
-from db.session import Session
 from fastapi import APIRouter, Body, Depends, Path, Query
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -13,28 +12,24 @@ user_router = APIRouter()
     "/users", tags=["Users"], response_model=UserAuth, status_code=200
 )
 def create_user(user: User = Body(...)) -> UserAuth:
-    db = Session()
-    response = UserService(db).create_user(user)
+    response = UserService().create_user(user)
     return JSONResponse(content=jsonable_encoder(response), status_code=200)
 
 
 @user_router.put("/user/{id}", tags=["Users"], response_model=UserEdit, dependencies=[Depends(JWTBearer())])
 def update_user(id: int, user: UserEdit = Body(...)) -> UserEdit:
-    db = Session()
-    response = UserService(db).update_user(user, id)
+    response = UserService().update_user(user, id)
     return JSONResponse(content=jsonable_encoder(response), status_code=200)
 
 @user_router.delete("/user/{id}", tags=["Users"], response_model=dict,dependencies=[Depends(JWTBearer())])
 def delete_user(id: int) -> dict:
-    db = Session()
-    UserService(db).delete_user(id)
+    UserService().delete_user(id)
     return JSONResponse(content={"msg": "Deleted"}, status_code=200)
 
 @user_router.post(
     "/login", tags=["Users"], response_model=UserAuth, status_code=200
 )
 def login_user(user: UserLogin = Body(...)) -> UserAuth:
-    db = Session()
-    response = UserService(db).login_user(user)
+    response = UserService().login_user(user)
     return JSONResponse(content=jsonable_encoder(response), status_code=200)
 

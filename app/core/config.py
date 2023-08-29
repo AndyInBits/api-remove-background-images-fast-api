@@ -23,5 +23,7 @@ class Settings:
     S3_BUCKET : str = os.getenv("S3_BUCKET")
     S3_HOST : str = os.getenv("S3_HOST")
     S3_SECRET_KEY : str = os.getenv("S3_SECRET_KEY")
+    REDIS_HOST : str = os.getenv("REDIS_HOST")
+    REDIS_PORT : str = os.getenv("REDIS_PORT")
 
 settings = Settings()

@@ -1,15 +1,17 @@
 import base64
 import hashlib
+from db.session import Session
 
 from fastapi import HTTPException
 from jwt_manager.jwt_manager import create_token
 from models.users import User as UserModel
 from schemas.user import User, UserAuth, UserEdit, UserLogin
-
+from redis_config.config import RedisInstance
 
 class UserService:
-    def __init__(self, db) -> None:
-        self.db = db
+    def __init__(self) -> None:
+        self.db = Session()
+        self.redis = RedisInstance()
 
     def create_user(self, user: User) -> UserAuth:
         user.password = self.password_hash(user.password)
@@ -65,7 +67,10 @@ class UserService:
             raise HTTPException(
                 status_code=400, detail="Incorrect username or password"
             )
+        
         response = UserAuth(email=user.email, token=create_token(user))
+        
+        self.redis.set_data(user.email, response.token)
         return response
 
     def password_hash(self, password: str) -> str:

@@ -11,3 +11,11 @@ services:
       - "80:5000"
     volumes:
       - ./app:/app
+  redis:
+    image: 'bitnami/redis:latest'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - ./redis-data:/data
+    ports:
+      - "6379:6379"
