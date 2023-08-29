@@ -6,5 +6,6 @@ COPY ./requirements.txt /app
 
 RUN pip install -r /app/requirements.txt
 
+RUN chmod +x /app/entrypoint.sh
 
-CMD ["uvicorn", "main:app", "--port", "5000", "--reload", "--host", "0.0.0.0"]
+ENTRYPOINT ["sh","/app/entrypoint.sh"]
