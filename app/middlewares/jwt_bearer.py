@@ -1,9 +1,10 @@
-from redis_config.config import RedisInstance
 from db.session import Session
-from jwt_manager.jwt_manager import validate_token
-from fastapi.security import HTTPBearer
 from fastapi import HTTPException, Request
+from fastapi.security import HTTPBearer
+from jwt_manager.jwt_manager import validate_token
 from models.users import User as UserModel
+from redis_config.config import RedisInstance
+
 
 class JWTBearer(HTTPBearer):
     async def __call__(self, request: Request):

@@ -1,21 +1,20 @@
 
 
 
+import os
+import sys
+
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-import sys
-import os
-
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from db.base_class import Base
-from routes.user import user_router
-from main import app
 from db.session import Session
+from main import app
+from routes.user import user_router
 from sqlalchemy.pool import StaticPool
-
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test_db.db"
 engine = create_engine(

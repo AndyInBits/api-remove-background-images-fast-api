@@ -1,8 +1,9 @@
 from enum import Enum
 from typing import Optional
-from fastapi import Form, File, UploadFile
+
+from fastapi import File, Form, HTTPException, UploadFile
 from pydantic import BaseModel, validator
-from fastapi import HTTPException
+
 
 class ImageFormat(Enum):
     JPEG = 'jpeg'

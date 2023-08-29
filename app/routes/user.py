@@ -1,10 +1,11 @@
-from fastapi import APIRouter, Body, Depends,Request, Header
+from fastapi import APIRouter, Body, Depends, Header, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
+from middlewares.jwt_bearer import JWTBearer
+from models.users import User as UserModel
 from schemas.user import User, UserAuth, UserEdit, UserLogin
 from services.user import UserService
-from models.users import User as UserModel
-from middlewares.jwt_bearer import JWTBearer
+
 user_router = APIRouter()
 
 def get_jwt_token(authorization: str = Header(...)):

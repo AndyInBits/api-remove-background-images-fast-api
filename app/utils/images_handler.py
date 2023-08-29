@@ -2,11 +2,13 @@ import io
 import os
 import shutil
 import uuid
-from rembg import remove
-from fastapi import UploadFile
+
 import boto3
 from core.config import settings
+from fastapi import UploadFile
 from PIL import Image
+from rembg import remove
+
 
 class ImageHandler:
     file: UploadFile

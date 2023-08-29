@@ -1,12 +1,12 @@
 import base64
 import hashlib
-from db.session import Session
 
+from db.session import Session
 from fastapi import HTTPException
 from jwt_manager.jwt_manager import create_token, validate_token
 from models.users import User as UserModel
-from schemas.user import User, UserAuth, UserEdit, UserLogin
 from redis_config.config import RedisInstance
+from schemas.user import User, UserAuth, UserEdit, UserLogin
 
 
 class UserService:

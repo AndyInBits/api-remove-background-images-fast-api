@@ -1,11 +1,12 @@
 import datetime
-from redis_config.config import RedisInstance
-from utils.images_handler import ImageHandler
+
 from db.session import Session
-from models.images import Image as ImageModel
-from schemas.image import Image, ImageResponse
-from jwt_manager.jwt_manager import validate_token
 from fastapi import HTTPException
+from jwt_manager.jwt_manager import validate_token
+from models.images import Image as ImageModel
+from redis_config.config import RedisInstance
+from schemas.image import Image, ImageResponse
+from utils.images_handler import ImageHandler
 
 
 class ImageService:

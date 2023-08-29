@@ -1,8 +1,8 @@
 from core.config import settings
+from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 from jwt import decode, encode
 from models.users import User as UserModel
-from fastapi import HTTPException
 
 
 def create_token(user: UserModel, secret: str = settings.SECRET_KEY) -> str:

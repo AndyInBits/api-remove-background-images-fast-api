@@ -4,8 +4,9 @@ from db.session import engine
 from fastapi import FastAPI
 from middlewares.error_handler import ErrorHandler
 from routes.healcheck import healcheck_router
-from routes.user import user_router
 from routes.image import images_router
+from routes.user import user_router
+
 
 def create_tables():         
 	Base.metadata.create_all(bind=engine)
