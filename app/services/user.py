@@ -3,10 +3,11 @@ import hashlib
 from db.session import Session
 
 from fastapi import HTTPException
-from jwt_manager.jwt_manager import create_token
+from jwt_manager.jwt_manager import create_token, validate_token
 from models.users import User as UserModel
 from schemas.user import User, UserAuth, UserEdit, UserLogin
 from redis_config.config import RedisInstance
+
 
 class UserService:
     def __init__(self) -> None:
@@ -30,9 +31,10 @@ class UserService:
         response = UserAuth(email=user.email, token=token)
         self.db.close()
         return response
-    
-    def update_user(self, user_param: User, id: int) -> User:
-        user = self.db.query(UserModel).filter(UserModel.id == id).first()
+
+    def update_user(self, user_param: User, token: str) -> User:
+        data = validate_token(token)
+        user = self.db.query(UserModel).filter(UserModel.id == data["id"]).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         user.email = user_param.email
@@ -42,15 +44,15 @@ class UserService:
         self.db.close()
         response = UserEdit(email=user.email, full_name=user.full_name)
         return response
-    
-    def delete_user(self, id: int) -> None:
-        user = self.db.query(UserModel).filter(UserModel.id == id).first()
+
+    def delete_user(self, token: str) -> None:
+        data = validate_token(token)
+        user = self.db.query(UserModel).filter(UserModel.id == data["id"]).first()
         if not user:
             raise HTTPException(status_code=404, detail="User not found")
         self.db.delete(user)
         self.db.commit()
         self.db.close()
-        return None
 
     def login_user(self, user_param: UserLogin) -> UserAuth:
         user = (
@@ -67,9 +69,9 @@ class UserService:
             raise HTTPException(
                 status_code=400, detail="Incorrect username or password"
             )
-        
+
         response = UserAuth(email=user.email, token=create_token(user))
-        
+
         self.redis.set_data(user.email, response.token)
         return response
 

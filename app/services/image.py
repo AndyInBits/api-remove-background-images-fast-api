@@ -5,6 +5,7 @@ from db.session import Session
 from models.images import Image as ImageModel
 from schemas.image import Image, ImageResponse
 from jwt_manager.jwt_manager import validate_token
+from fastapi import HTTPException
 
 
 class ImageService:
@@ -30,3 +31,19 @@ class ImageService:
         )
         self.db.close()
         return response
+    
+    def get_all_images_from_user(self, jwt):
+        user = validate_token(jwt)
+        images = self.db.query(ImageModel).filter(ImageModel.user_id == user["id"]).all()
+        return images
+    
+    def delete_image_from_user(self, jwt, img_id):
+        user = validate_token(jwt)
+        image = self.db.query(ImageModel).filter(ImageModel.id == img_id, ImageModel.user_id == user["id"]).first()
+        if not image:
+            raise HTTPException(status_code=404, detail="Image not found")
+        self.db.delete(image)
+        self.db.commit()
+        self.db.close()
+    
+
