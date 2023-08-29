@@ -6,4 +6,4 @@ database_url = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWO
 
 engine = create_engine(database_url, echo=True)
 
-Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Session = sessionmaker(autocommit=False, autoflush=True, bind=engine)

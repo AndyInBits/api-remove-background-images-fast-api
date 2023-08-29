@@ -21,8 +21,11 @@ class UserService:
         )
         self.db.add(new_user)
         self.db.commit()
-        token = create_token(new_user)
-        response = UserAuth(email=new_user.email, token=token)
+        user = (
+            self.db.query(UserModel).filter(UserModel.email == new_user.email).first()
+        )
+        token = create_token(user)
+        response = UserAuth(email=user.email, token=token)
         self.db.close()
         return response
     

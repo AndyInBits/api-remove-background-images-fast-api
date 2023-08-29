@@ -8,4 +8,4 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     password = Column(String)
     full_name = Column(String)
-    user = relationship("User", back_populates="images")
+    images = relationship("Image", back_populates="owner")

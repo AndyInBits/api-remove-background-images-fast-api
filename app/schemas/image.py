@@ -13,8 +13,8 @@ class ImageFormat(Enum):
 
 class Image(BaseModel):
     format_output : ImageFormat = Form(default=ImageFormat.PNG)
-    width : Optional[int] = Form(500)
-    height : Optional[int] = Form(500)
+    width : Optional[int] = Form(500, gt=0)
+    height : Optional[int] = Form(500, gt=0)
     image:  UploadFile = File(...,format=["jpeg","png","gif","bmp","tiff"])
 
     @validator("image")
