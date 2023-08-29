@@ -6,7 +6,7 @@ services:
       context: ./
       dockerfile: Dockerfile
     restart: on-failure
-    env_file: .env
+    env_file: .venv
     ports:
       - "80:5000"
     volumes:
